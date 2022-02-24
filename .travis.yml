@@ -1,25 +1,16 @@
 name: Scratchip Binary CI
 language: generic
 env:
-  - VER=3.3.2 MILL_VERSION=0.7.3
+  - MILL_VERSION=0.10.0
 before_deploy:
   - curl --fail -L -o mill https://github.com/lihaoyi/mill/releases/download/$MILL_VERSION/$MILL_VERSION-assembly
   - chmod +x mill
-  - wget https://github.com/freechipsproject/chisel3/archive/v$VER.zip
-  - unzip v$VER.zip
-  - cd chisel3-$VER
-  - ../mill chisel3[2.12.11].assembly
-  - mv out/chisel3/2.12.11/assembly/dest/out-tmp.jar chisel3-$VER.jar
-  - cd ..
-  - mkdir -p lib
-  - cp chisel3-$VER/chisel3-$VER.jar lib
   - make verilog
   - tar czvf cache.tar.gz .cache
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   file:
-    - lib/chisel3-$VER.jar
     - cache.tar.gz
     - mill
   skip_cleanup: true

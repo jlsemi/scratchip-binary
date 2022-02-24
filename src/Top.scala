@@ -16,5 +16,6 @@ class Top extends Module {
 }
 
 object Main extends App {
-  Driver.execute(args, () => new Top)
+  (new chisel3.stage.ChiselStage)
+    .emitVerilog(new Top, args)
 }
